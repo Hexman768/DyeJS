@@ -4,7 +4,7 @@ TermTint (short for Terminal Tint) is a lightweight terminal coloring library th
 # Usage
 To use termtint, simply download termtint.js and place it is your working node.js directory. 
 The following is an example of painting a string blue:
-```
+```javascript
 const tint = require('./termtint.js');
 
 const str = tint.blue('Hello, World!');
