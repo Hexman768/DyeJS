@@ -1,13 +1,13 @@
-# TermTint
-TermTint (short for Terminal Tint) is a lightweight terminal coloring library that is easy to use and maintain.
+# DyeJS
+DyeJS (Terminal Dye) is a lightweight and performant terminal coloring/dye library that is super easy to use and maintain.
 
 # Usage
-To use termtint, simply download termtint.js and place it is your working node.js directory. 
+To use DyeJS, simply download dye.js and place it is your working node.js directory. 
 The following is an example of painting a string blue:
 ```javascript
-const tint = require('./termtint.js');
+const dye = require('./dye.js');
 
-const str = tint.blue('Hello, World!');
+const str = dye.blue('Hello, World!');
 
 console.log(str);
 process.stdout.write(str);
