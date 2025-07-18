@@ -1,12 +1,12 @@
 /*
- * A JavaScript console color library intended to make the 
- * job of coloring strings in the node console easier. 
+ * A JavaScript CLI coloring library intended to make the
+ * job of coloring strings in the node console easier.
  *
  * Author: Zachary Pedigo
  * Version: 0.0.1
  */
 
-const tint = {
+const styles = {
     colors: {
         FgBlack: "\x1b[30m",
         FgRed: "\x1b[31m",
@@ -30,7 +30,7 @@ const tint = {
     },
     modes: {
         Reset: "\x1b[0m",
-        Bright: "\x1b[1m",
+        Bold: "\x1b[1m",
         Dim: "\x1b[2m",
         Underscore: "\x1b[4m",
         Blink: "\x1b[5m",
@@ -41,31 +41,31 @@ const tint = {
 
 module.exports = {
     blue: (str) => {
-        return `${pastel.colors.FgBlue}${str}${pastel.modes.Reset}`;   
+        return `${styles.colors.FgBlue}${str}${styles.modes.Reset}`;
     },
     red: (str) => {
-        return `${pastel.colors.FgRed}${str}${pastel.modes.Reset}`;
+        return `${styles.colors.FgRed}${str}${styles.modes.Reset}`;
     },
     green: (str) => {
-        return `${pastel.colors.FgGreen}${str}${pastel.modes.Reset}`;
+        return `${styles.colors.FgGreen}${str}${styles.modes.Reset}`;
     },
     yellow: (str) => {
-        return `${pastel.colors.FgYellow}${str}${pastel.modes.Reset}`;
+        return `${styles.colors.FgYellow}${str}${styles.modes.Reset}`;
     },
     magenta: (str) => {
-        return `${pastel.colors.FgMagenta}${str}${pastel.modes.Reset}`;
+        return `${styles.colors.FgMagenta}${str}${styles.modes.Reset}`;
     },
     cyan: (str) => {
-        return `${pastel.colors.FgCyan}${str}${pastel.modes.Reset}`;
+        return `${styles.colors.FgCyan}${str}${styles.modes.Reset}`;
     },
     white: (str) => {
-        return `${pastel.colors.FgWhite}${str}${pastel.modes.Reset}`;
+        return `${styles.colors.FgWhite}${str}${styles.modes.Reset}`;
     },
     gray: (str) => {
-        return `${pastel.colors.FgGray}${str}${pastel.modes.Reset}`;
+        return `${styles.colors.FgGray}${str}${styles.modes.Reset}`;
     },
     BgWhite: (str) => {
-        return `${pastel.colors.BgWhite}${str}${pastel.modes.Reset}`;
+        return `${styles.colors.BgWhite}${str}${styles.modes.Reset}`;
     }
 };
 
