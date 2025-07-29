@@ -1,3 +1,4 @@
-const blue = require('./dye.js');
+import {blue, green} from "./dye.js";
 
-console.log(blue);
+console.log(blue("Hello"));
+console.log(green(", World!"));
