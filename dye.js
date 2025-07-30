@@ -8,14 +8,35 @@
 
 import ansi from "./ansi-styles/index.js";
 
+const ANSI_START = '\x1b[';
+const FG_DEFAULT = 39;
+const BG_DEFAULT = 49;
+
 // returns the assembled style that can be prepended to a string
-const assembleStyle = (str, open) => {
-    const openCode = `\x1b[${open}m`
-    return openCode + str;
+const constructStyle = (str, open, close) => {
+    const openCode = open != null && open !== "" ? `\x1b[${open}m` : '';
+    const closeCode = close != null && close !== "" ? `\x1b[${close}m` :
+        `${ANSI_START}${FG_DEFAULT}m`;
+
+    const result = `${openCode}${str}${closeCode}`;
+
+    console.log(`Result string: ${result}`);
+
+    return result;
+    //return openCode + str + `\x1b[${close}m`;
 }
 
-// color exports
-export const blue = (arg) => assembleStyle(arg, ansi.fgColors.blue[0]);
-export const green = (arg) => assembleStyle(arg, ansi.fgColors.green[0]);
+// foreground color exports
+export const black = (arg) => constructStyle(arg, ansi.fgColors.black[0]);
+export const red = (arg) => constructStyle(arg, ansi.fgColors.red[0]);
+export const green = (arg) => constructStyle(arg, ansi.fgColors.green[0]);
+export const yellow = (arg) => constructStyle(arg, ansi.fgColors.yellow[0]);
+export const blue = (arg) => constructStyle(arg, ansi.fgColors.blue[0]);
+export const magenta = (arg) => constructStyle(arg, ansi.fgColors.magenta[0]);
+export const cyan = (arg) => constructStyle(arg, ansi.fgColors.cyan[0]);
+export const white = (arg) => constructStyle(arg, ansi.fgColors.white[0]);
+export const gray = (arg) => constructStyle(arg, ansi.fgColors.gray[0]);
 
-//console.log(`${styles.blue}Hello, World!`);
+// background color exports
+export const bgBlack = (arg) => constructStyle(arg, ansi.bgColors.bgBlack[0], ansi.bgColors.bgBlack[1]);
+export const bgRed = (arg) => constructStyle(arg, ansi.bgColors.bgRed[0], ansi.bgColors.bgRed[1]);
