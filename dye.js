@@ -15,8 +15,8 @@ const BG_DEFAULT = 49;
 // returns the assembled style that can be prepended to a string
 const constructStyle = (str, open, close) => {
     const openCode = open != null && open !== "" ? `\x1b[${open}m` : '';
-    const closeCode = close != null && close !== "" ? `\x1b[${close}m` : 
-    `${ANSI_START}${FG_DEFAULT}m`;
+    const closeCode = close != null && close !== "" ? `\x1b[${close}m` :
+        `${ANSI_START}${FG_DEFAULT}m`;
 
     const result = `${openCode}${str}${closeCode}`;
 
