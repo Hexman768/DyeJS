@@ -26,12 +26,20 @@ const constructStyle = (str, open, close) => {
     //return openCode + str + `\x1b[${close}m`;
 }
 
+function build(open, close) {
+    const openCode = open !== null && open !== "" ? `\x1b[${open}m` : `${ANSI_START}${FG_DEFAULT}`;
+    const closeCode = close !== null && close !== "" ? `\x1b[${close}` : `${ANSI_START}${FG_DEFAULT}`;
+    return function (str) {
+        return `${openCode}${str}${closeCode}`;
+    };
+}
+
 // foreground color exports
 export const black = (arg) => constructStyle(arg, ansi.fgColors.black[0]);
 export const red = (arg) => constructStyle(arg, ansi.fgColors.red[0]);
 export const green = (arg) => constructStyle(arg, ansi.fgColors.green[0]);
 export const yellow = (arg) => constructStyle(arg, ansi.fgColors.yellow[0]);
-export const blue = (arg) => constructStyle(arg, ansi.fgColors.blue[0]);
+export const blue = test(ansi.fgColors.blue[0], ansi.fgColors.blue[1]);
 export const magenta = (arg) => constructStyle(arg, ansi.fgColors.magenta[0]);
 export const cyan = (arg) => constructStyle(arg, ansi.fgColors.cyan[0]);
 export const white = (arg) => constructStyle(arg, ansi.fgColors.white[0]);
