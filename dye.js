@@ -12,6 +12,8 @@ const ANSI_START = '\x1b[';
 const FG_DEFAULT = 39;
 const BG_DEFAULT = 49;
 
+let dye = Object.create(null);
+
 /*
  * This function takes in a 'color' variable that is actually key-value pair.
  * The first value (key) is the opening ANSI code. The second (value) is the
@@ -37,6 +39,22 @@ const build = color => {
     };
 }
 
+// build coloring function getters
+// This does not work because getters can't have arguments.
+// Returning a function also doesn't work, because it can't be properly called from another file.
+// I think we are going to have to try something less clever here.
+for (const [name, style] of Object.entries(ansi.fgColors)) {
+    console.log(name);
+    dye[name] = {
+        get() {
+            return function(args) {
+                console.log(args);
+                return build(args);
+            }
+        }
+    }
+}
+
 // foreground color exports
 export const black = build(ansi.fgColors.black);
 export const red = build(ansi.fgColors.red);
@@ -58,3 +76,5 @@ export const bgMagenta = build(ansi.bgColors.bgMagenta);
 export const bgCyan = build(ansi.bgColors.bgCyan);
 export const bgWhite = build(ansi.bgColors.bgWhite);
 export const bgGray = build(ansi.bgColors.bgGray);
+
+export default dye;
