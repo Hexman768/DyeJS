@@ -33,4 +33,22 @@ const styles = {
   }
 }
 
-export default styles;
+function buildStyles() {
+  for (const [groupname, group] of Object.entries(styles)) {
+    for (const [stylename, style] of Object.entries(group)) {
+      styles[stylename] = {
+        open: `\x1b[${style[0]}m`,
+        close: `\x1b[${style[1]}m`,
+      };
+    }
+  }
+
+  styles.fgColors.close = '\x1b[39m';
+  styles.bgColors.close = '\x1b[49m';
+
+  return styles;
+}
+
+const ansistyles = buildStyles();
+
+export default ansistyles;
