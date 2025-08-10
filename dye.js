@@ -5,14 +5,21 @@
  * Author: Zachary Pedigo
  * Version: 1.0.0-SNAPSHOT
  */
-
-import ansi from "./ansi-styles/index.js";
+import ansi from './ansi-styles/index.js';
+import util from 'util';
 
 const ANSI_START = '\x1b[';
 const FG_DEFAULT = 39;
 const BG_DEFAULT = 49;
 
-let dye = Object.create(null);
+const styles = Object.create(null);
+
+
+function Dye() {
+  const dye = {};
+  Object.setPrototypeOf(dye, Dye.prototype);
+  return dye;
+}
 
 /*
  * This function takes in a 'color' variable that is actually key-value pair.
@@ -23,37 +30,73 @@ let dye = Object.create(null);
  * @return {function} function that returns ANSI colored string.
   */
 const build = color => {
-    if (color === undefined || color.length == 0) {
-        console.error(`[ERROR]: Color array is undefined or has no values!`);
-    }
+  if (color === undefined || color.length == 0) {
+    console.error(`[ERROR]: Color array is undefined or has no values!`);
+  }
 
-    const open = color[0];
-    const close = color[1];
+  const open = color[0];
+  const close = color[1];
 
-    const openCode = open !== null && open !== "" ? `${ANSI_START}${open}m` : `${ANSI_START}${FG_DEFAULT}m`;
-    const closeCode = close !== null && close !== "" ? `${ANSI_START}${close}m` : `${ANSI_START}${FG_DEFAULT}m`;
+  const openCode = open !== null && open !== "" ? `${ANSI_START}${open}m` : `${ANSI_START}${FG_DEFAULT}m`;
+  const closeCode = close !== null && close !== "" ? `${ANSI_START}${close}m` : `${ANSI_START}${FG_DEFAULT}m`;
 
-    return inputStr => {
-        const result = `${openCode}${inputStr}${closeCode}`;
-        return result;
-    };
+  return inputStr => {
+    const result = `${openCode}${inputStr}${closeCode}`;
+    return result;
+  };
 }
 
 // build coloring function getters
 // This does not work because getters can't have arguments.
 // Returning a function also doesn't work, because it can't be properly called from another file.
 // I think we are going to have to try something less clever here.
-for (const [name, style] of Object.entries(ansi.fgColors)) {
-    console.log(name);
-    dye[name] = {
-        get() {
-            return function(args) {
-                console.log(args);
-                return build(args);
-            }
-        }
+for (const [name, style] of Object.entries(ansi)) {
+  //console.log(`${name}`);
+  //console.log(style);
+  styles[name] = {
+    get() {
+      let color = style;
+
+      // check if the current style is part of a chain
+      const existing = this._chain;
+
+      if (existing !== undefined) {
+        //console.log(`chain exists: ${existing}`);
+        color.open = `${existing.color.open}${color.open}`;
+      } else {
+        //console.log(`chain does not exist`);
+      }
+
+      //console.log(color);
+      //console.log(existing);
+
+      const chain = { color, existing };
+
+      const dyeWorker = (...params) => {
+        const message = params.length === 1 ? '' + params[0] : params.join(' ');
+        //console.log(chain.color);
+
+        //util.inspect(chain.color, {showHidden: false, depth: null, colors: true});
+
+        //console.log(chain.color[0]);
+        //printObj(chain.color);
+        return `${chain.color.open}${message}${chain.color.close}`;
+      };
+
+      Object.setPrototypeOf(dyeWorker, dyeProto);
+
+      // create a chain
+      dyeWorker._chain = chain;
+      Object.defineProperty(this, name, { value: dyeWorker });
+
+      return dyeWorker;
     }
+  };
 }
+
+const dyeProto = Object.defineProperties(() => {}, { ...styles });
+
+Object.defineProperties(Dye.prototype, styles);
 
 // foreground color exports
 export const black = build(ansi.fgColors.black);
@@ -77,4 +120,4 @@ export const bgCyan = build(ansi.bgColors.bgCyan);
 export const bgWhite = build(ansi.bgColors.bgWhite);
 export const bgGray = build(ansi.bgColors.bgGray);
 
-export default dye;
+export default Dye();

@@ -1,4 +1,5 @@
 /* Styles to be used by the other builder class */
+
 const styles = {
   fgColors: {
     black:   [30, 39],
@@ -23,13 +24,13 @@ const styles = {
     bgGray:    [100, 49]
   },
   modifiers: {
-    Reset: "\x1b[0m",
-    Bold: "\x1b[1m",
-    Dim: "\x1b[2m",
-    Underscore: "\x1b[4m",
-    Blink: "\x1b[5m",
-    Reverse: "\x1b[7m",
-    Hidden: "\x1b[8m"
+    reset: "\x1b[0m",
+    bold: "\x1b[1m",
+    dim: "\x1b[2m",
+    underscore: "\x1b[4m",
+    blink: "\x1b[5m",
+    reverse: "\x1b[7m",
+    hidden: "\x1b[8m"
   }
 }
 
@@ -39,6 +40,8 @@ function buildStyles() {
       styles[stylename] = {
         open: `\x1b[${style[0]}m`,
         close: `\x1b[${style[1]}m`,
+        openCode: `${style[0]}`,
+        closeCode: `${style[1]}`
       };
     }
   }
