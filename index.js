@@ -12,4 +12,6 @@ console.log(black("Hello, World!"));
 
 console.log(bgRed(blue("Hello, World!")));
 
-console.log(dye.green.blink.bgBlack('Hello, World!'));
+console.log('Hello, World!');
+console.log(dye.bold('Hello, World!'));
+console.log(dye.overline('Hello, World!'));
