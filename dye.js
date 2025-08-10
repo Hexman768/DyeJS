@@ -6,7 +6,6 @@
  * Version: 1.0.0-SNAPSHOT
  */
 import ansi from './ansi-styles/index.js';
-import util from 'util';
 
 const ANSI_START = '\x1b[';
 const FG_DEFAULT = 39;
@@ -46,13 +45,9 @@ const build = color => {
   };
 }
 
-// build coloring function getters
-// This does not work because getters can't have arguments.
-// Returning a function also doesn't work, because it can't be properly called from another file.
-// I think we are going to have to try something less clever here.
+// This block creates the chaining behavior, essentially we are ensuring that each time a 
+// style function is called, a worker is returned with a combination of all styles in the chain
 for (const [name, style] of Object.entries(ansi)) {
-  //console.log(`${name}`);
-  //console.log(style);
   styles[name] = {
     get() {
       let color = style;
@@ -61,25 +56,13 @@ for (const [name, style] of Object.entries(ansi)) {
       const existing = this._chain;
 
       if (existing !== undefined) {
-        //console.log(`chain exists: ${existing}`);
         color.open = `${existing.color.open}${color.open}`;
-      } else {
-        //console.log(`chain does not exist`);
       }
-
-      //console.log(color);
-      //console.log(existing);
 
       const chain = { color, existing };
 
       const dyeWorker = (...params) => {
         const message = params.length === 1 ? '' + params[0] : params.join(' ');
-        //console.log(chain.color);
-
-        //util.inspect(chain.color, {showHidden: false, depth: null, colors: true});
-
-        //console.log(chain.color[0]);
-        //printObj(chain.color);
         return `${chain.color.open}${message}${chain.color.close}`;
       };
 
