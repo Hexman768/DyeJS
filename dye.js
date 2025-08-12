@@ -31,13 +31,14 @@ function Dye() {
 const build = color => {
   if (color === undefined || color.length == 0) {
     console.error(`[ERROR]: Color array is undefined or has no values!`);
+    return;
   }
 
   const open = color[0];
   const close = color[1];
 
   const openCode = open !== null && open !== "" ? `${ANSI_START}${open}m` : `${ANSI_START}${FG_DEFAULT}m`;
-  const closeCode = close !== null && close !== "" ? `${ANSI_START}${close}m` : `${ANSI_START}${FG_DEFAULT}m`;
+  const closeCode = close !== null && close !== "" ? `${ANSI_START}${close}m` : `${ANSI_START}${BG_DEFAULT}m`;
 
   return inputStr => {
     const result = `${openCode}${inputStr}${closeCode}`;
@@ -46,7 +47,7 @@ const build = color => {
 }
 
 // This block creates the chaining behavior, essentially we are ensuring that each time a 
-// style function is called, a worker is returned with a combination of all styles in the chain
+// style function is called, a worker is returned with a combination of all styles in the chain.
 for (const [name, style] of Object.entries(ansi)) {
   styles[name] = {
     get() {
